@@ -22,10 +22,7 @@ RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list && \
 WORKDIR /opt
 
 # Clone and setup BigBrotherBot
-RUN git clone https://github.com/BigBrotherBot/big-brother-bot.git /opt/b3 && \
-    mv /opt/b3/b3/conf /opt/b3/b3/.conf && \
-    mv /opt/b3/b3/extplugins /opt/b3/b3/.extplugins && \
-    mv /opt/b3/b3/parsers /opt/b3/b3/.parsers
+RUN git clone https://github.com/BigBrotherBot/big-brother-bot.git /opt/b3
 
 # Install Python requirements
 RUN pip install --no-cache-dir --upgrade setuptools wheel && \
