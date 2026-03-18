@@ -1,9 +1,8 @@
 name: Build and Push Docker Images
 on: 
- push:
- schedule:
-    # * is a special character in YAML so you have to quote this string
-    - cron:  '11 11 1 * *'
+  push:
+    branches:
+      - master  # Only runs when you push to master
 
 jobs:
   docker:
@@ -11,14 +10,15 @@ jobs:
     permissions:
       contents: read
       packages: write
+      
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: master
 
       - name: Log in to GHCR
-        uses: docker/login-action@v3  # Updated to v3 to fix warnings
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -26,8 +26,11 @@ jobs:
 
       - name: Build and push
         id: docker_build
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: qbdown/b3:latest,qbdown/b3:${{ github.run_number }}
+          # Dynamically uses your username and repo name
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/b3:latest
+            ghcr.io/${{ github.repository_owner }}/b3:${{ github.run_number }}
