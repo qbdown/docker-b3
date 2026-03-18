@@ -4,14 +4,6 @@
 
 Docker version of Big Brother Bot (B3). Based on Ubuntu 18.04 (Bionic), which is the last Ubuntu LTS version to (officially) support Python 2, the language B3 was written in.
 
-## Tags
-
-This image supports two tags:
-- `latest` Supports a sqlite database as well as an external MariaDB/MySQL and PostgreSQL database.
-- `minimal` Supports only a sqlite database 
-
-Both tags run the current head from master at https://github.com/BigBrotherBot/big-brother-bot
-
 ## Usage
 Create a `data` folder to mount to the container, with following folder structure:
 ```
