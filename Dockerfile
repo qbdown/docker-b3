@@ -1,24 +1,33 @@
-FROM ubuntu:bionic
+# Using the last stable slim image for Python 2
+FROM python:2.7-slim-buster
 
-ENV DEBIAN_FRONTEND noninteractive
+# Environment setup
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    HOME=/data
 
-ENV HOME /data
 VOLUME /data
 
-RUN apt-get update && \
-    apt-get -y upgrade && \
-    apt-get -y install --no-install-recommends libsqlite3-dev sqlite3 git build-essential python-mysqldb python python-dev python-distribute python-pip postgresql-common libpq-dev && \ 
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# Install ONLY necessary build tools
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    gcc \
+    libc6-dev \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt
 
+# Clone and setup BigBrotherBot
 RUN git clone https://github.com/BigBrotherBot/big-brother-bot.git /opt/b3 && \
     mv /opt/b3/b3/conf /opt/b3/b3/.conf && \
     mv /opt/b3/b3/extplugins /opt/b3/b3/.extplugins && \
-    mv /opt/b3/b3/parsers /opt/b3/b3/.parsers && \
-    pip install wheel && \
-    pip install -r /opt/b3/requirements.txt
+    mv /opt/b3/b3/parsers /opt/b3/b3/.parsers
+
+# Install Python requirements
+# --no-cache-dir is critical for staying under the 500MB GitHub limit
+RUN pip install --no-cache-dir --upgrade setuptools wheel && \
+    pip install --no-cache-dir -r /opt/b3/requirements.txt
 
 ADD start.sh /opt/start.sh
 RUN chmod +x /opt/start.sh
