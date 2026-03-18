@@ -1,4 +1,4 @@
-# Using the last stable slim image for Python 2
+# The last reliable slim image for Python 2
 FROM python:2.7-slim-buster
 
 # Environment setup
@@ -8,8 +8,11 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 VOLUME /data
 
-# Install ONLY necessary build tools
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# FIX FOR EXIT CODE 100: Point to Debian Archives
+RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list && \
+    sed -i 's|security.debian.org/debian-security|archive.debian.org/debian-security|g' /etc/apt/sources.list && \
+    sed -i '/stretch-updates/d' /etc/apt/sources.list && \
+    apt-get update && apt-get install -y --no-install-recommends \
     git \
     gcc \
     libc6-dev \
@@ -25,7 +28,6 @@ RUN git clone https://github.com/BigBrotherBot/big-brother-bot.git /opt/b3 && \
     mv /opt/b3/b3/parsers /opt/b3/b3/.parsers
 
 # Install Python requirements
-# --no-cache-dir is critical for staying under the 500MB GitHub limit
 RUN pip install --no-cache-dir --upgrade setuptools wheel && \
     pip install --no-cache-dir -r /opt/b3/requirements.txt
 
