@@ -31,8 +31,9 @@ RUN git clone https://github.com/BigBrotherBot/big-brother-bot.git /opt/b3 && \
 RUN pip install --no-cache-dir --upgrade setuptools wheel && \
     pip install --no-cache-dir -r /opt/b3/requirements.txt
 
-ADD start.sh /opt/start.sh
-RUN chmod +x /opt/start.sh
+# Directly run the python script
+# ENTRYPOINT is the "base command"
+ENTRYPOINT ["python", "/opt/b3/b3_run.py"]
 
-ENTRYPOINT ["/opt/start.sh"]
+# CMD provides the default flags (which can be overridden by docker run)
 CMD ["--help"]
