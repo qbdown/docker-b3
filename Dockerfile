@@ -3,10 +3,7 @@ FROM python:2.7-slim-buster
 
 # Environment setup
 ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    HOME=/data
-
-VOLUME /data
+    PYTHONUNBUFFERED=1
 
 # FIX FOR EXIT CODE 100: Point to Debian Archives
 RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list && \
