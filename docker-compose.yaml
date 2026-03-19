@@ -1,0 +1,98 @@
+version: '3.7'
+
+# Shared configuration template
+x-b3-base: &b3-base
+  image: ghcr.io/qbdown/b3:latest
+  restart: always
+  network_mode: "host"
+
+services:
+  # Port 1280 (Killhouse)
+  b3_1280:
+    <<: *b3-base
+    container_name: b3_1280
+    volumes:
+      - /home/desktop/.callofduty4/main/khx.log:/var/log/games_mp.log
+      - ./b3/conf:/opt/b3/b3/conf
+      - ./b3/parsers:/opt/b3/b3/parsers
+    command: -c /opt/b3/b3/conf/b3_1280.xml
+
+  # Port 1025 (Allmaps)
+  b3_1025:
+    <<: *b3-base
+    container_name: b3_1025
+    volumes:
+      - /home/desktop/.callofduty4/main/allmaps.log:/var/log/games_mp.log
+      - ./b3/conf:/opt/b3/b3/conf
+      - ./b3/parsers:/opt/b3/b3/parsers
+    command: -c /opt/b3/b3/conf/b3_1025.xml
+
+  # Port 28961 - Crossfire (crfx) -> ADDED THIS ONE
+  b3_28961:
+    <<: *b3-base
+    container_name: b3_28961
+    volumes:
+      - /home/desktop/.callofduty4/main/crfx.log:/var/log/games_mp.log
+      - ./b3/conf:/opt/b3/b3/conf
+      - ./b3/parsers:/opt/b3/b3/parsers
+    command: -c /opt/b3/b3/conf/b3_28961.xml
+
+  # Port 28971 (Softcore)
+  b3_28971:
+    <<: *b3-base
+    container_name: b3_28971
+    volumes:
+      - /home/desktop/.callofduty4/main/softcore.log:/var/log/games_mp.log
+      - ./b3/conf:/opt/b3/b3/conf
+      - ./b3/parsers:/opt/b3/b3/parsers
+    command: -c /opt/b3/b3/conf/b3_28971.xml
+
+  # Port 1338 (Deathrun)
+  b3_1338:
+    <<: *b3-base
+    container_name: b3_1338
+    volumes:
+      - /home/desktop/.callofduty4/mods/nn_dr13/games_mp.log:/var/log/games_mp.log
+      - ./b3/conf:/opt/b3/b3/conf
+      - ./b3/parsers:/opt/b3/b3/parsers
+    command: -c /opt/b3/b3/conf/b3_1338.xml
+
+  # Port 29700 (HNS)
+  b3_29700:
+    <<: *b3-base
+    container_name: b3_29700
+    volumes:
+      - /home/desktop/.callofduty4/mods/hns/hns.log:/var/log/games_mp.log
+      - ./b3/conf:/opt/b3/b3/conf
+      - ./b3/parsers:/opt/b3/b3/parsers
+    command: -c /opt/b3/b3/conf/b3_29700.xml
+
+  # Port 5001 (Nuketown MLS)
+  b3_5001:
+    <<: *b3-base
+    container_name: b3_5001
+    volumes:
+      - /home/desktop/.callofduty4/mods/nukepmls/games_mp.log:/var/log/games_mp.log
+      - ./b3/conf:/opt/b3/b3/conf
+      - ./b3/parsers:/opt/b3/b3/parsers
+    command: -c /opt/b3/b3/conf/b3_5001.xml
+
+  # Port 1026 (Nuketown DPG)
+  b3_1026:
+    <<: *b3-base
+    container_name: b3_1026
+    volumes:
+      - /home/desktop/.callofduty4/mods/nuketown/dpgtdmx.log:/var/log/games_mp.log
+      - ./b3/conf:/opt/b3/b3/conf
+      - ./b3/parsers:/opt/b3/b3/parsers
+    command: -c /opt/b3/b3/conf/b3_1026.xml
+
+  # Port 1910 (Rotu)
+  b3_1910:
+    <<: *b3-base
+    container_name: b3_1910
+    volumes:
+      - /home/desktop/.callofduty4/mods/nn_rotu/rotur.log:/var/log/games_mp.log
+      - ./b3/conf:/opt/b3/b3/conf
+      - ./b3/parsers:/opt/b3/b3/parsers
+    command: -c /opt/b3/b3/conf/b3_1910.xml
